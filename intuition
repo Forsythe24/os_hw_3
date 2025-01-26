@@ -1,0 +1,61 @@
+#!/bin/bash
+
+iteration=1
+success_count=0
+recent_numbers=()
+input_flag=0
+
+COLOR_RED='\e[31m'
+COLOR_GREEN='\e[32m'
+COLOR_RESET='\e[0m'
+
+while true
+do
+	if [[ "${input_flag}" -eq 0 ]]
+		then
+			echo "Step: ${iteration}"
+	fi
+
+	read -p "Enter a digit from 0 to 9 (q - quit): " user_input
+
+	if [ "${user_input}" = "q" ]
+		then
+			exit 0
+	fi
+
+	if ! [[ "${user_input}" =~ ^[0-9]$ ]]
+		then
+			echo -e "${COLOR_RED}Invalid input!${COLOR_RESET}"
+			input_flag=1
+			continue
+	fi
+	input_flag=0
+
+	generated_number=$((${RANDOM} % 10))
+	if [ ${user_input} -eq ${generated_number} ]
+		then
+			success_count=$((success_count + 1))
+			echo "Match! My number: ${generated_number}"
+			display_number="${COLOR_GREEN}${generated_number}${COLOR_RESET}"
+		else
+			echo "No match! My number: ${generated_number}"
+			display_number="${COLOR_RED}${generated_number}${COLOR_RESET}"
+	fi
+
+	recent_numbers+=(${display_number})
+
+	success_rate=$((success_count * 100 / iteration))
+	failure_rate=$((100 - success_rate))
+	echo "Success: ${success_rate}% Failure: ${failure_rate}%"
+
+	array_size=${#recent_numbers[@]}
+	if [ $array_size -lt 10 ]
+		then
+			echo -e "Last numbers: ${recent_numbers[@]}"
+		else
+			echo -e "Last numbers: ${recent_numbers[@]: -10}"
+	fi
+
+	iteration=$((iteration + 1))
+	echo ""
+done
