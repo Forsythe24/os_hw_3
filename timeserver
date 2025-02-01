@@ -25,7 +25,7 @@ def initialize_server(port_number):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Использование: python timeserver.py <порт>")
+        print("Необходимо указать порт")
         sys.exit(1)
     
     port_number = int(sys.argv[1])

@@ -15,7 +15,7 @@ def establish_connection(server_ip, server_port):
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Использование: python timeclient.py <IP> <порт>")
+        print("Необходимо указать IP и порт")
         sys.exit(1)
     
     server_ip = sys.argv[1]
