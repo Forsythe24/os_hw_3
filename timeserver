@@ -1,0 +1,32 @@
+#! /usr/bin/python3
+
+import socket
+import sys
+from datetime import datetime
+
+def initialize_server(port_number):
+    server_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
+    server_connection.bind(('0.0.0.0', port_number))
+    
+    server_connection.listen(5)
+    print(f"Сервер запущен и слушает на порту {port_number}...")
+    
+    while True:
+        client_connection, client_info = server_connection.accept()
+        print(f"Подключение от {client_info}")
+        
+        current_timestamp = datetime.now().strftime("%d.%m.%Y %H:%M")
+        
+        client_connection.send(current_timestamp.encode('utf-8'))
+        
+        client_connection.close()
+        print(f"Соединение с {client_info} закрыто")
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Использование: python timeserver.py <порт>")
+        sys.exit(1)
+    
+    port_number = int(sys.argv[1])
+    initialize_server(port_number)

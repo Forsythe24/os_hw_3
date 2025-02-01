@@ -1,0 +1,23 @@
+#! /usr/bin/python3
+
+import socket
+import sys
+
+def establish_connection(server_ip, server_port):
+    client_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
+    client_connection.connect((server_ip, server_port))
+    
+    received_data = client_connection.recv(1024).decode('utf-8')
+    print(f"Текущее время: {received_data}")
+    
+    client_connection.close()
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print("Использование: python timeclient.py <IP> <порт>")
+        sys.exit(1)
+    
+    server_ip = sys.argv[1]
+    server_port = int(sys.argv[2])
+    establish_connection(server_ip, server_port)
